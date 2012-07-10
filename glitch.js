@@ -239,7 +239,7 @@
 				// remains in the same place on the screen
 				animateOptions.step = function(now, fx){
 					if(fx.prop === "top") {
-						$canvas.css("top", - now - options.borderSize);
+						$canvas.css("top", fx.start - now);
 					}
 				};
 			}
