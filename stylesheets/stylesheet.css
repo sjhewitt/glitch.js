@@ -249,3 +249,18 @@ a {
 .cf {
   zoom:1;
 }
+
+.example {
+  border-bottom: 1px solid #B5E853;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+.middle {
+  text-align: center;
+}
+.middle .btn {
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 18px;
+}

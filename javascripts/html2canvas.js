@@ -47,25 +47,33 @@ _html2canvas.Util.backgroundImage = function (src) {
     return src;
 };
 
+function adjustBounds(el, box) {
+    var win = document.defaultView;
+    var doc = el.ownerDocument;
+    var body = doc.body;
+    var docElem = doc.documentElement;
+    var clientTop  = docElem.clientTop  || body.clientTop  || 0;
+    var clientLeft = docElem.clientLeft || body.clientLeft || 0;
+    var scrollTop  = win.pageYOffset || docElem.scrollTop;
+    var scrollLeft = win.pageXOffset || docElem.scrollLeft;
+    var top  = box.top  + scrollTop  - clientTop;
+    var left = box.left + scrollLeft - clientLeft;
+
+    return {
+        top: top,
+        left: left,
+        bottom: top + box.height,
+        height: box.height,
+        width: box.width
+    };
+}
+
 _html2canvas.Util.Bounds = function getBounds (el) {
     var clientRect,
     bounds = {};
 
     if (el.getBoundingClientRect){
-        clientRect = el.getBoundingClientRect();
-
-
-        // TODO add scroll position to bounds, so no scrolling of window necessary
-        bounds.top = clientRect.top;
-        bounds.bottom = clientRect.bottom || (clientRect.top + clientRect.height);
-        bounds.left = clientRect.left;
-
-        // older IE doesn't have width/height, but top/bottom instead
-        bounds.width = clientRect.width || (clientRect.right - clientRect.left);
-        bounds.height = clientRect.height || (clientRect.bottom - clientRect.top);
-
-        return bounds;
-
+        return adjustBounds(el, el.getBoundingClientRect());
     }
 };
 
@@ -745,7 +753,6 @@ _html2canvas.Generate.ListRoman = function(number) {
  */
 
 _html2canvas.Parse = function ( images, options ) {
-    window.scroll(0,0);
 
     var support = {
         rangeBounds: false,
@@ -1082,11 +1089,7 @@ _html2canvas.Parse = function ( images, options ) {
                             range = body.createTextRange();
                         }
 
-                        if (range.getBoundingClientRect()) {
-                            bounds = range.getBoundingClientRect();
-                        }else{
-                            bounds = {};
-                        }
+                        bounds = adjustBounds(textNode, range.getBoundingClientRect());
 
                     }
                 }else{

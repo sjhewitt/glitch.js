@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <!-- <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" /> -->
+
+    <title>Glitch.js by sjhewitt</title>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="https://raw.github.com/sjhewitt/glitch.js/master/glitch.js"></script>
+    <script src="javascripts/html2canvas.js"></script>
+  </head>
+
+  <body>
+
+  <div class="outer-container">
+    <header>
+      <div class="container">
+          <h1>Glitch.js</h1>
+          <h2>Glitch transition effect</h2>
+      </div>
+    </header>
+
+	<div class="container">
+	<div id="example1" class="example">
+		<h1>Glitch an image</h1>
+		<div class="source"><img src="images/Lenna.png" style="width: 100%;" /></div>
+		<div class="middle"><button class="btn">Glitch</button></div>
+		<div class="target"></div>
+	</div>
+
+	<script>
+	$("#example1 button").click(function(){
+		glitch($("#example1 .source img"), {
+			complete: function(canvas){
+				$("#example1 .target").html(canvas);
+			}
+		})
+	})
+	</script>
+
+	<div id="example2" class="example">
+		<h1>Glitch some HTML elements</h1>
+		<div class="source">
+			<h2 style="background: #238aa1;">Header Element</h2>
+			<div>
+				<input type="text" value="input text" />
+			</div>
+			<ul>
+				<li>List Element 1</li>
+				<li>List Element 2</li>
+				<li>List Element 3</li>
+				<li>List Element 4</li>
+			</ul>
+			<button class="btn">Button with rounded corners</button>
+		</div>
+		<div class="middle"><button class="btn">Glitch</button></div>
+		<div class="target"></div>
+	</div>
+	<script>
+	$("#example2 button").click(function(){
+		glitch($("#example2 .source"), {
+			complete: function(canvas){
+				$("#example2 .target").html(canvas);
+			}
+		})
+	})
+	</script>
+
+
+	<div id="example3" class="example">
+		<h1>HTML and cross-domain images</h1>
+		<div class="source" style="background: #aaa; border: 5px solid green;">
+			<h2 style="background: #238aa1;">Header Element</h2>
+			<div>
+				<input type="text" value="input text" />
+			</div>
+			<div style="display: inline-block; background-image: url(http://www.google.com/logos/2011/gregormendel11-res.jpg); width: 256px; height: 341px;">
+				<p style="text-align: center; color: red;">And some text on top of it</p>
+			</div>
+		</div>
+		<div class="middle"><button class="btn">Glitch</button></div>
+		<div class="target"></div>
+	</div>
+	<script>
+	$("#example3 button").click(function(){
+		glitch($("#example3 .source"), {
+			complete: function(canvas){
+				$("#example3 .target").html(canvas);
+			}
+		});
+		return false;
+	})
+	</script>
+
+	<div id="wholePage" class="example centered">
+		<h1>Now glitch the whole page</h1>
+		<div class="middle">
+			<button class="btn">GLITCH!!</button>
+		</div>
+	</div>
+	<script>
+	$("#wholePage button").click(function(){
+		window.oldContent  = $(".outer-container");
+		glitchReplace(
+			window.oldContent,
+			$("<div class='outer-container'><div class=\"container middle\"><button id=\"restore\" class='btn'>Restore</button></div></div>"),
+			{
+				effect: "slide"
+			});
+	})
+	</script>
+
+</div>
+</div>
+<script>
+	$("body").on("click", "#restore", function(){
+		glitchReplace($(".outer-container"), window.oldContent);
+	});
+</script>
+</body>
+</html>
