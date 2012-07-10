@@ -1,1 +1,14 @@
-console.log('This would be the main JS file.');
+/*global $,glitch,glitchReplace */
+$(function(){
+	var headerContainer = $("#glitch-header").wrap("<div>").parent();
+	var glitchHeader = function(){
+		glitchReplace(headerContainer.children(), $("#glitch-header").clone(), {
+			effect:"slide",
+			delay: 1000,
+			complete: function() {
+				setTimeout(glitchHeader, 1000);
+			}
+		});
+	};
+	glitchHeader();
+});

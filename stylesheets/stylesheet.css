@@ -35,6 +35,10 @@ li {
    h2       - project description
 */
 
+#glitch-header {
+  background: #151515 url("../images/bkg.png") 0 0;
+}
+
 header {
   background: rgba(0, 0, 0, 0.1);
   width: 100%;
