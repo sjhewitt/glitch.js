@@ -158,12 +158,15 @@
 	 * @param  {Object} options An object containing the options for glitch
 	 */
 	glitch.replace = function(el, options) {
+		options = options || {};
 		// store a reference to the complete callback so we can use the same
 		// options for the glitch function call
 		var _complete = options.complete;
 		options.complete = function(canvas) {
 			el.after(canvas).detach();
-			_complete();
+			if(_complete){
+				_complete();
+			}
 		};
 
 		glitch(el, options);
@@ -172,6 +175,10 @@
 	/**
 	 * Replace `el` with `newEl` by overlaying a glitched version of `el`, then
 	 * animating it out to reveal `newEl`
+	 *
+	 * The animation will take into account elements of different sizes by sliding
+	 * the container to reveal it, however it looks best if the elements to be
+	 * transitioned between are of similar sizes
 	 *
 	 * @param  {jQuery} el     The original element that will be glitched
 	 * @param  {jQuery} newEl  The element to show
@@ -201,9 +208,22 @@
 			borderColor: "green"
 		}, options || {});
 
+		// add the new element to the dom so we can properly calculate its dimensions
+		newEl.insertAfter(el);
+
 		// store a reference to the complete callback so we can use the same
 		// options for the glitch function call
-		var _complete = options.complete;
+		var _complete = options.complete,
+			// get the dimensions of the elements so we can resize the targetContainer
+			// to reveal all the content after the glitch transition
+			origHeight = el.outerHeight(),
+			origWidth = el.outerWidth(),
+			targetHeight = newEl.outerHeight(),
+			targetWidth = newEl.outerWidth(),
+			origOverflow = newEl.css("overflow");
+
+		// take the new element out of the dom again
+		newEl.detach();
 
 		// create a callback that will
 		options.complete = function(canvas){
@@ -213,7 +233,8 @@
 				// create a container element that contains the canvas and position it
 				// over the element we're replacing
 				container = $("<div>").css({
-						"border-top": options.borderSize ? options.borderSize + "px solid " + options.borderColor : "none",
+						"border-top": options.borderSize ? options.borderSize + "px solid " +
+							options.borderColor : "none",
 						position: "absolute",
 						left: offset.left,
 						top: offset.top - options.borderSize,
@@ -229,6 +250,14 @@
 					// delay the animation a bit
 					.delay(options.delay),
 
+				targetContainer = $("<div>").css({
+					width: origWidth,
+					height: origHeight,
+					overflow: "hidden",
+					border: "none"
+				})
+					.html(newEl),
+
 				// the default transition effect is to fade out
 				animation = {
 					opacity: 0
@@ -240,11 +269,29 @@
 							// remove the container from the dom
 							container.remove();
 
-							// call the complete callback
-							_complete();
+							// then animate the height of the new element back to its measured
+							// height and width
+							targetContainer.animate({
+								height: targetHeight,
+								width: targetWidth
+							},
+							{
+								duration: 100,
+								complete: function(){
 
-							// and clear all references
-							options = $canvas = container = null;
+									// take the targetContainer element out of the dom
+									newEl.detach().insertAfter(targetContainer);
+									targetContainer.remove();
+
+									// call the complete callback
+									_complete();
+
+									// and clear all references
+									options = $canvas = container = null;
+
+								}
+							});
+
 						}
 					};
 
@@ -270,7 +317,8 @@
 			// replace the original element with the new one
 			// we use detatch so that the event handlers on the old
 			// element are retained.
-			newEl.show().insertAfter(el);
+			// newEl.show().insertAfter(el);
+			targetContainer.insertAfter(el);
 			el.detach();
 
 		};
