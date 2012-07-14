@@ -142,7 +142,7 @@
 			// a callback that takes the glitched canvas as its only argument
 			complete: $.noop
 		}, options || {});
-		
+
 		// callback for when the element has been rendered
 		options.onrendered = function(canvas) {
 			options.complete(_glitch(canvas, options.amount));
@@ -150,6 +150,23 @@
 
 		// render the element onto a canvas
 		html2canvas(el, options);
+	};
+
+	/**
+	 * Replace el with a glitched version of it
+	 * @param  {jQuery} el      The element to glitch
+	 * @param  {Object} options An object containing the options for glitch
+	 */
+	glitch.replace = function(el, options) {
+		// store a reference to the complete callback so we can use the same
+		// options for the glitch function call
+		var _complete = options.complete;
+		options.complete = function(canvas) {
+			el.after(canvas).detach();
+			_complete();
+		};
+
+		glitch(el, options);
 	};
 
 	/**
@@ -161,7 +178,7 @@
 	 * @param  {Object} options An object containing the options for the animation
 	 *                          and any options for html2canvas
 	 */
-	var glitchReplace = function(el, newEl, options) {
+	glitch.transition = function(el, newEl, options) {
 		// set the default options
 		options = $.extend({
 			// the amount to glitch the image
@@ -184,8 +201,11 @@
 			borderColor: "green"
 		}, options || {});
 
+		// store a reference to the complete callback so we can use the same
+		// options for the glitch function call
 		var _complete = options.complete;
-		
+
+		// create a callback that will
 		options.complete = function(canvas){
 			// position the canvas absolutely within the container
 			var $canvas = $(canvas).css("position", "absolute"),
@@ -248,9 +268,10 @@
 			container.animate(animation, animateOptions);
 
 			// replace the original element with the new one
+			// we use detatch so that the event handlers on the old
+			// element are retained.
 			newEl.show().insertAfter(el);
 			el.detach();
-			// el.replaceWith(newEl.show());
 
 		};
 
@@ -259,5 +280,4 @@
 	};
 
 	window.glitch = glitch;
-	window.glitchReplace = glitchReplace;
 })();
