@@ -216,10 +216,10 @@
 		var _complete = options.complete,
 			// get the dimensions of the elements so we can resize the targetContainer
 			// to reveal all the content after the glitch transition
-			origHeight = el.outerHeight(),
-			origWidth = el.outerWidth(),
-			targetHeight = newEl.outerHeight(),
-			targetWidth = newEl.outerWidth(),
+			origHeight = el.outerHeight(true),
+			origWidth = el.outerWidth(true),
+			targetHeight = newEl.outerHeight(true),
+			targetWidth = newEl.outerWidth(true),
 			origOverflow = newEl.css("overflow");
 
 		// take the new element out of the dom again
@@ -254,7 +254,8 @@
 					width: origWidth,
 					height: origHeight,
 					overflow: "hidden",
-					border: "none"
+					border: "none",
+					"box-sizing": "border-box"
 				})
 					.html(newEl),
 
