@@ -2,7 +2,7 @@
 $(function(){
 	var headerContainer = $("#glitch-header").wrap("<div>").parent();
 	var glitchHeader = function(){
-		glitchReplace(headerContainer.children(), $("#glitch-header").clone(), {
+		glitch.transition(headerContainer.children(), $("#glitch-header").clone(), {
 			effect:"slide",
 			delay: 1000,
 			complete: function() {

@@ -21,25 +21,25 @@
     <header>
       <div class="container">
           <h1>Glitch.js</h1>
-          <h2>Glitch transition effect</h2>
+          <h2>Glitched DOM elements</h2>
       </div>
     </header>
 
 	<div class="container">
 	<div id="example1" class="example">
 		<h1>Glitch an image</h1>
-		<div class="source"><img src="images/Lenna.png" style="width: 100%;" /></div>
+		<img class="source" src="images/Lenna.png" style="width: 100%;" />
 		<div class="middle"><button class="btn">Glitch</button></div>
 		<div class="target"></div>
 	</div>
 
 	<script>
 	$("#example1 button").click(function(){
-		glitch($("#example1 .source img"), {
-			complete: function(canvas){
+		glitch($("#example1 .source"), {
+			complete: function(canvas) {
 				$("#example1 .target").html(canvas);
 			}
-		})
+		});
 	})
 	</script>
 
@@ -62,12 +62,14 @@
 		<div class="target"></div>
 	</div>
 	<script>
+	var example2 = false;
 	$("#example2 button").click(function(){
-		glitch($("#example2 .source"), {
-			complete: function(canvas){
-				$("#example2 .target").html(canvas);
-			}
-		})
+		if(!example2) {
+			example2 = $("#example2 .source");
+		} else {
+			$("#example2 canvas").replaceWith(example2);
+		}
+		glitch.replace(example2);
 	})
 	</script>
 
@@ -87,14 +89,56 @@
 		<div class="target"></div>
 	</div>
 	<script>
+	var example3 = false;
 	$("#example3 button").click(function(){
-		glitch($("#example3 .source"), {
-			complete: function(canvas){
-				$("#example3 .target").html(canvas);
+		if(!example3) {
+			example3 = $("#example3 .source");
+		} else {
+			$("#example3 canvas").replaceWith(example3);
+		}
+		glitch.replace(example3);
+	})
+	</script>
+
+	<style type="text/css">
+	#example4 .source {
+		background: #4a3b9c;
+		border: 5px solid green;
+	}
+
+	#example4 h2 {
+		background: #238aa1;
+	}
+	</style>
+
+	<div id="example4" class="example">
+		<h1>Glitch Transition</h1>
+		<div class="source">
+			<h2>Page 1</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+		<div class="middle"><button class="btn">Glitch</button></div>
+		<div class="target"></div>
+	</div>
+	<script>
+	$(function(){
+		var example4a = $("#example4 .source");
+		var example4b = $("<div class='source'><h2>Page 2</h2><p>Beard flexitarian semiotics tofu retro. Synth sustainable accusamus hoodie, scenester retro wayfarers occupy. Twee ea marfa nesciunt pickled pork belly. Pop-up fugiat squid, aute brunch viral fingerstache american apparel et cupidatat placeat butcher etsy art party. Mlkshk sriracha delectus, dreamcatcher occaecat freegan esse placeat fugiat williamsburg aliquip nisi cred retro jean shorts. Stumptown mixtape gastropub, you probably haven't heard of them master cleanse laboris sunt scenester post-ironic dreamcatcher ex. Williamsburg sriracha cray high life cillum.</p></div>").width(400);
+		$("#example4 button").click(function(){
+			if(example4a[0].parentNode) {
+				glitch.transition(example4a, example4b);
+			} else {
+				glitch.transition(example4b, example4a, {
+					effect: "slide"
+				});
 			}
 		});
-		return false;
-	})
+	});
 	</script>
 
 	<div id="wholePage" class="example centered">
@@ -106,7 +150,7 @@
 	<script>
 	$("#wholePage button").click(function(){
 		window.oldContent  = $(".outer-container");
-		glitchReplace(
+		glitch.transition(
 			window.oldContent,
 			$("<div class='outer-container'><div class=\"container middle\"><button id=\"restore\" class='btn'>Restore</button></div></div>"),
 			{
@@ -119,7 +163,7 @@
 </div>
 <script>
 	$("body").on("click", "#restore", function(){
-		glitchReplace($(".outer-container"), window.oldContent);
+		glitch.transition($(".outer-container"), window.oldContent);
 	});
 </script>
 </body>
