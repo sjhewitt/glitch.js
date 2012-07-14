@@ -37,6 +37,7 @@ li {
 
 #glitch-header {
   background: #151515 url("../images/bkg.png") 0 0;
+  margin-bottom: 20px;
 }
 
 header {
@@ -50,7 +51,7 @@ header {
 header h1 {
   font-size: 30px;
   line-height: 1.5;
-  margin: 0 0 0 -40px;
+  margin: 0;
   font-weight: bold;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   color: #b5e853;
@@ -60,6 +61,11 @@ header h1 {
   letter-spacing: -1px;
   -webkit-font-smoothing: antialiased;
 }
+
+  header h1 a {
+    color: #b5e853;
+    text-decoration: none;
+  }
 
 header h1:before {
   content: "./ ";
