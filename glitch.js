@@ -5,19 +5,34 @@
 	Copyright (c) 2012 Simon Hewitt.
 	http://www.twitter.com/sjhewitt
 	*/
-(function(){
-	/*global $,html2canvas */
+(function($){
+	/*global html2canvas */
 
-	/**
-	 * Generates an integer between min and max
-	 *
-	 * @param  {Number} min The lower bound
-	 * @param  {Number} max The upper bound
-	 * @return {Number}     A random number
-	 */
-	function getRandInt(min, max) {
-		return (Math.floor(Math.random() * (max - min) + min));
-	}
+	var noop = function(){},
+		/**
+		 * Set default properties on an object
+		 * @param  {Object} obj      The target object
+		 * @param  {Object} defaults The default properties
+		 * @return {Object}          The target obj
+		 */
+		defaults = function(obj, defaults) {
+			for (var prop in defaults) {
+				if (obj[prop] === null)
+					obj[prop] = defaults[prop];
+			}
+			return obj;
+		},
+		/**
+		 * Generates an integer between min and max
+		 *
+		 * @param  {Number} min The lower bound
+		 * @param  {Number} max The upper bound
+		 * @return {Number}     A random number
+		 */
+		getRandInt = function(min, max) {
+			return (Math.floor(Math.random() * (max - min) + min));
+		};
+
 
 	/**
 	 * Apply the glitch effect to a canvas object
@@ -130,18 +145,18 @@
 
 	/**
 	 * Creates a canvas containing a glitched version of the element
-	 * @param  {jQuery}   el       The element to glitch
+	 * @param  {DOMElement} el     The element to glitch
 	 * @param  {Object}   options  An object containing the complete callback,
 	 *                             the amount to glitch the image, and any
 	 *                             html2canvas options
 	 */
 	var glitch = function(el, options) {
-		options = $.extend({
+		options = defaults(options || {}, {
 			// the amount to glitch the image
 			amount: 6,
 			// a callback that takes the glitched canvas as its only argument
-			complete: $.noop
-		}, options || {});
+			complete: noop
+		});
 
 		// callback for when the element has been rendered
 		options.onrendered = function(canvas) {
@@ -149,12 +164,12 @@
 		};
 
 		// render the element onto a canvas
-		html2canvas(el, options);
+		html2canvas(el[0] ? el : [el], options);
 	};
 
 	/**
 	 * Replace el with a glitched version of it
-	 * @param  {jQuery} el      The element to glitch
+	 * @param  {DOMElement} el  The element to glitch
 	 * @param  {Object} options An object containing the options for glitch
 	 */
 	glitch.replace = function(el, options) {
@@ -163,7 +178,13 @@
 		// options for the glitch function call
 		var _complete = options.complete;
 		options.complete = function(canvas) {
-			el.after(canvas).detach();
+			if($ && el instanceof $) {
+				el.after(canvas).detach();
+			} else {
+				// no jQuery...
+				el.parentNode.insertBefore(canvas, el);
+				el.parentNode.removeChild(el);
+			}
 			if(_complete){
 				_complete();
 			}
@@ -187,11 +208,11 @@
 	 */
 	glitch.transition = function(el, newEl, options) {
 		// set the default options
-		options = $.extend({
+		options = defaults(options || {}, {
 			// the amount to glitch the image
 			amount: 6,
 			// A callback when the animation is complete
-			complete: $.noop,
+			complete: noop,
 			// The delay after rendering the glitched element until starting the transition
 			delay: 300,
 			// The duration of the transition effect
@@ -206,7 +227,7 @@
 			borderSize: 2,
 			// The color of the top border, only used in slide mode
 			borderColor: "green"
-		}, options || {});
+		});
 
 		// add the new element to the dom so we can properly calculate its dimensions
 		newEl.insertAfter(el);
@@ -318,7 +339,6 @@
 			// replace the original element with the new one
 			// we use detatch so that the event handlers on the old
 			// element are retained.
-			// newEl.show().insertAfter(el);
 			targetContainer.insertAfter(el);
 			el.detach();
 
@@ -329,4 +349,43 @@
 	};
 
 	window.glitch = glitch;
-})();
+
+	if($) {
+		/**
+		 * jQuery glitch.js plugin
+		 *
+		 * This can be called in the following ways:
+		 *
+		 * Replace the element with a glitched version
+		 *     $("#el").glitch()
+		 *
+		 * Create a glitched canvas and pass it to a callback function
+		 *     $("#el").glitch(function(canvas){})
+		 *
+		 * Transition effect
+		 *     $("#el").glitch('transition', $("#newEl"), {})
+		 */
+		$.fn.glitch = function(method) {
+			var args = Array.prototype.splice.call(arguments, 1);
+			method = method || 'replace';
+			return this.each(function(){
+				if(method instanceof $) {
+					glitch.transition($(this), method, args[0]);
+				} else if(typeof method == 'function') {
+					// just a callback passed in
+					glitch($(this), {
+						complete: method
+					});
+				} else if(typeof method == 'object') {
+					// an options object passed in
+					glitch($(this), method);
+				} else if(glitch.hasOwnProperty(method)) {
+					// explicitly call a method
+					glitch[method].apply(null, [$(this)].concat(args));
+				} else {
+					$.error('Method ' +  method + ' does not exist on jQuery.glitch');
+				}
+			});
+		};
+	}
+})(window.jQuery);
