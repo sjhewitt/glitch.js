@@ -104,6 +104,8 @@
 	#example4 .source {
 		background: #4a3b9c;
 		border: 5px solid green;
+		height: 300px;
+		overflow: auto;
 	}
 
 	#example4 h2 {
@@ -128,12 +130,53 @@
 	<script>
 	$(function(){
 		var example4a = $("#example4 .source");
-		var example4b = $("<div class='source'><h2>Page 2</h2><p>Beard flexitarian semiotics tofu retro. Synth sustainable accusamus hoodie, scenester retro wayfarers occupy. Twee ea marfa nesciunt pickled pork belly. Pop-up fugiat squid, aute brunch viral fingerstache american apparel et cupidatat placeat butcher etsy art party. Mlkshk sriracha delectus, dreamcatcher occaecat freegan esse placeat fugiat williamsburg aliquip nisi cred retro jean shorts. Stumptown mixtape gastropub, you probably haven't heard of them master cleanse laboris sunt scenester post-ironic dreamcatcher ex. Williamsburg sriracha cray high life cillum.</p></div>").width(400);
+		var example4b = $("<div class='source'><h2>Page 2</h2><p>Beard flexitarian semiotics tofu retro. Synth sustainable accusamus hoodie, scenester retro wayfarers occupy. Twee ea marfa nesciunt pickled pork belly. Pop-up fugiat squid, aute brunch viral fingerstache american apparel et cupidatat placeat butcher etsy art party. Mlkshk sriracha delectus, dreamcatcher occaecat freegan esse placeat fugiat williamsburg aliquip nisi cred retro jean shorts. Stumptown mixtape gastropub, you probably haven't heard of them master cleanse laboris sunt scenester post-ironic dreamcatcher ex. Williamsburg sriracha cray high life cillum.</p></div>");
 		$("#example4 button").click(function(){
 			if(example4a[0].parentNode) {
-				glitch.transition(example4a, example4b);
+				glitch.transition(example4a, example4b, {
+					effect: "slide"
+				});
 			} else {
-				glitch.transition(example4b, example4a, {
+				glitch.transition(example4b, example4a);
+			}
+		});
+	});
+	</script>
+
+	<style type="text/css">
+	#example5 .source {
+		background: #4a3b9c;
+		border: 5px solid green;
+	}
+
+	#example5 h2 {
+		background: #238aa1;
+	}
+	</style>
+
+	<div id="example5" class="example">
+		<h1>Glitch Transition (different size elements)</h1>
+		<div class="source">
+			<h2>Page 1</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+			quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+			consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+			cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+		</div>
+		<div class="middle"><button class="btn">Glitch</button></div>
+		<div class="target"></div>
+	</div>
+	<script>
+	$(function(){
+		var example5a = $("#example5 .source");
+		var example5b = $("<div class='source'><h2>Page 2</h2><p>Beard flexitarian semiotics tofu retro. Synth sustainable accusamus hoodie, scenester retro wayfarers occupy. Twee ea marfa nesciunt pickled pork belly. Pop-up fugiat squid, aute brunch viral fingerstache american apparel et cupidatat placeat butcher etsy art party. Mlkshk sriracha delectus, dreamcatcher occaecat freegan esse placeat fugiat williamsburg aliquip nisi cred retro jean shorts. Stumptown mixtape gastropub, you probably haven't heard of them master cleanse laboris sunt scenester post-ironic dreamcatcher ex. Williamsburg sriracha cray high life cillum.</p></div>").width(400);
+		$("#example5 button").click(function(){
+			if(example5a[0].parentNode) {
+				glitch.transition(example5a, example5b);
+			} else {
+				glitch.transition(example5b, example5a, {
 					effect: "slide"
 				});
 			}
