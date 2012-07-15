@@ -35,10 +35,8 @@
 
 	<script>
 	$("#example1 button").click(function(){
-		glitch($("#example1 .source"), {
-			complete: function(canvas) {
+		$("#example1 .source").glitch(function(canvas){
 				$("#example1 .target").html(canvas);
-			}
 		});
 	})
 	</script>
@@ -69,7 +67,7 @@
 		} else {
 			$("#example2 canvas").replaceWith(example2);
 		}
-		glitch.replace(example2);
+		example2.glitch();
 	})
 	</script>
 
@@ -96,7 +94,7 @@
 		} else {
 			$("#example3 canvas").replaceWith(example3);
 		}
-		glitch.replace(example3);
+		example3.glitch();
 	})
 	</script>
 
@@ -133,11 +131,11 @@
 		var example4b = $("<div class='source'><h2>Page 2</h2><p>Beard flexitarian semiotics tofu retro. Synth sustainable accusamus hoodie, scenester retro wayfarers occupy. Twee ea marfa nesciunt pickled pork belly. Pop-up fugiat squid, aute brunch viral fingerstache american apparel et cupidatat placeat butcher etsy art party. Mlkshk sriracha delectus, dreamcatcher occaecat freegan esse placeat fugiat williamsburg aliquip nisi cred retro jean shorts. Stumptown mixtape gastropub, you probably haven't heard of them master cleanse laboris sunt scenester post-ironic dreamcatcher ex. Williamsburg sriracha cray high life cillum.</p></div>");
 		$("#example4 button").click(function(){
 			if(example4a[0].parentNode) {
-				glitch.transition(example4a, example4b, {
+				example4a.glitch(example4b, {
 					effect: "slide"
 				});
 			} else {
-				glitch.transition(example4b, example4a);
+				example4b.glitch(example4a);
 			}
 		});
 	});

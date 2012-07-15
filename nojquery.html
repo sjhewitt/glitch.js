@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <!-- <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" /> -->
+
+    <title>Glitch.js by sjhewitt</title>
+
+    <script src="https://raw.github.com/sjhewitt/glitch.js/master/glitch.js"></script>
+    <script src="javascripts/html2canvas.js"></script>
+  </head>
+
+  <body>
+
+  <div class="outer-container">
+    <header>
+      <div class="container">
+          <h1><a href="index.html">Glitch.js</a></h1>
+          <h2>Glitched DOM elements</h2>
+      </div>
+    </header>
+
+	<div class="container">
+	<div id="example1" class="example">
+		<h1>Glitch an image</h1>
+		<img class="source" src="images/Lenna.png" style="width: 100%;" />
+		<div class="middle"><button class="btn">Glitch</button></div>
+		<div class="target"></div>
+	</div>
+
+	<script>
+	(function(){
+		var example1 = document.getElementById('example1');
+		var btn = example1.getElementsByClassName('btn')[0];
+		btn.onclick = function(){
+			glitch(example1.getElementsByClassName('source'), {
+				complete: function(canvas){
+					var target = example1.getElementsByClassName('target')[0];
+					target.appendChild(canvas);
+				}
+			});
+		};
+	})();
+	</script>
+
+
+	<div id="example2" class="example">
+		<h1>Glitch some HTML elements</h1>
+		<div class="source">
+			<h2 style="background: #238aa1;">Header Element</h2>
+			<div>
+				<input type="text" value="input text" />
+			</div>
+			<ul>
+				<li>List Element 1</li>
+				<li>List Element 2</li>
+				<li>List Element 3</li>
+				<li>List Element 4</li>
+			</ul>
+			<button class="btn">Button with rounded corners</button>
+		</div>
+		<div class="middle"><button class="btn glitch">Glitch</button></div>
+		<div class="target"></div>
+	</div>
+	<script>
+	(function(){
+		var example2 = document.getElementById('example2');
+		var btn = example2.getElementsByClassName('glitch')[0];
+		btn.onclick = function(){
+			glitch.replace(example2.getElementsByClassName('source')[0]);
+		};
+	})();
+	</script>
+
+</div>
+</div>
+</body>
+</html>
