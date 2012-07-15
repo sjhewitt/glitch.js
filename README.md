@@ -6,7 +6,8 @@ A glitched effect for DOM elements.
 ![Glitched image](http://sjhewitt.github.com/glitch.js/images/example.png)
 
 See the [examples page](http://sjhewitt.github.com/glitch.js/examples.html) for 
-an idea of what it does.
+an idea of what it does or read the [blog post](http://blog.sjhewitt.co.uk/2012/07/javascript-glitch-effect-glitch-js/)
+for some background info.
 
 Usage
 -----
