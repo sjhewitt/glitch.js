@@ -45,7 +45,7 @@ $("#currentContent").glitch(function(canvas){
 // or with options
 $("#currentContent").glitch({
     amount: 8,
-    callback: function(canvas){
+    complete: function(canvas){
         // do something with canvas
     }
 })
