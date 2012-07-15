@@ -3,8 +3,10 @@ glitch.js
 
 A glitched effect for DOM elements.
 
+![Glitched image](http://sjhewitt.github.com/glitch.js/images/example.png)
+
 See the [examples page](http://sjhewitt.github.com/glitch.js/examples.html) for 
-an idea of what can be acheived.
+an idea of what it does.
 
 Usage
 -----
