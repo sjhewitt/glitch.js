@@ -23,7 +23,8 @@ property of the window namespace, and as a jQuery plugin if jQuery is available:
 ### Glitch
 
 To generate a canvas that contains a glitched version of the element, just
-call the `glitch` function:
+call the `glitch` function passing in the element to glitch and an options
+object with a `complete` property that acts as the callback:
 
 ```javascript
 glitch(document.getElementById("currentContent"), {
@@ -66,8 +67,8 @@ The options are:
 
 ### Glitch Replace
 
-To replace the element with a glitched version, call `glitch.replace` using the
-same options as glitch.
+To replace the element with a glitched version, call `glitch.replace`. It takes
+the same options object as `glitch`.
 
 ```javascript
 glitch.replace(document.getElementById("currentContent"), {
@@ -75,12 +76,14 @@ glitch.replace(document.getElementById("currentContent"), {
 });
 ```
 
-Using the jQuery plugin:
+Using the jQuery plugin, you can just call glitch with no arguments, or, if you
+want to provide options, use the replace method and the options object as the
+second argument:
 
 ```javascript
 $("#currentContent").glitch();
 
-// to pass options in:
+// and to pass options in:
 $("#currentContent").glitch('replace', {
     amount: 7
 });
@@ -101,6 +104,40 @@ $("#currentContent").glitch($("<div><p>New Content</p></div>"), {
     }
 });
 ```
+
+On top of the `glitch` options, you can specify the following extra options for
+the transition:
+
+<table>
+    <tr>
+        <th>effect</th>
+        <td>The transition effect to use. This may be "fade" or "slide" 
+            (default: fade)</td>
+    </tr>
+    <tr>
+        <th>delay</th>
+        <td>The delay after rendering the glitched element until starting the 
+            transition (default: 300)</td>
+    </tr>
+    <tr>
+        <th>duration</th>
+        <td>The duration of the transition effect (default: 500)</td>
+    </tr>
+    <tr>
+        <th>zIndex</th>
+        <td>The z-index to apply to the overlay. You might need to tweak this 
+            if you have things that appear above the element, or are using high 
+            z-indexes in your page</td>
+    </tr>
+    <tr>
+        <th>borderSize</th>
+        <td>The size of the top border. Set to 0 to disable, only used in slide mode</td>
+    </tr>
+    <tr>
+        <th>borderColor</th>
+        <td>The color of the top border, only used in slide mode</td>
+    </tr>
+</table>
 
 Notes
 -----
