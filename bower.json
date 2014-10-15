@@ -16,6 +16,6 @@
     "tests"
   ],
 	"dependencies": {
-		"html2canvas": "=> 0.5.0-alpha"
+		"html2canvas": ">=0.4.1"
 	}
 }
