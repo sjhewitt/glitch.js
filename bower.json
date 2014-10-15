@@ -1,0 +1,21 @@
+{
+  "name": "glitch.js",
+  "main": "glitch.js",
+  "version": "0.0.0",
+  "homepage": "http://sjhewitt.co.uk/2012/07/javascript-glitch-effect-glitch-js/",
+  "authors": [
+    "Simon Hewitt <si@sjhewitt.co.uk>"
+  ],
+  "description": "A glitched effect for DOM elements.",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+	"dependencies": {
+		"html2canvas": "=> 0.5.0-alpha"
+	}
+}
