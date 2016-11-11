@@ -18,7 +18,7 @@ make sure you've loaded it before applying the effect.
 If you want to use the transition animation then a recent version of jQuery is
 also needed.
 
-There are 3 functions available to acheive the effect, exposed via the `glitch`
+There are 3 functions available to achieve the effect, exposed via the `glitch`
 property of the window namespace, and as a jQuery plugin if jQuery is available: 
 
 ### Glitch
